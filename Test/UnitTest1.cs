@@ -94,7 +94,7 @@ namespace Test
             scroll();
             By submitBtn = By.XPath("//*[@id='submitAccount']");
             Move(driver, submitBtn);
-
+            Assert.Pass("Passed");
         }
       
         [Test, Category("Search Product")]
@@ -186,9 +186,11 @@ namespace Test
                     }
                 }
             }
+            bool x = true;
+            Assert.AreEqual(x, equal);
         }
 
-        [Test,Category("Buy Product")]
+       // [Test,Category("Buy Product")]
 
         [TearDown]
         public void EndTest()
