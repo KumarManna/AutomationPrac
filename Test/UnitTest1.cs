@@ -100,6 +100,10 @@ namespace Test
         [Test, Category("Search Product")]
         public void Test4()
         {
+            By t = By.XPath("//div[@id='block_top_menu']/ul/li[3]");
+            Move(driver, t);
+            scroll();
+            scroll();
             By image = By.XPath("//*[@class='product-image-container']");
             Mouse_Hover(driver, driver.FindElement(image));
             Thread.Sleep(100);
@@ -190,9 +194,16 @@ namespace Test
             Assert.AreEqual(x, equal);
         }
 
-       // [Test,Category("Buy Product")]
+        //[Test, Category("Buy Product")]
+        //public void Test5()
+        //{
+        //    Test1();
 
-        [TearDown]
+        //    Thread.Sleep(1000000);
+
+        //    // }
+
+            [TearDown]
         public void EndTest()
         {
             close_quit();
