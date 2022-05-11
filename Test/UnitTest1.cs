@@ -21,6 +21,11 @@ namespace Test
         [Test,Category("Sign in")]
         public void Test1()
         {
+            Sign_In();
+            Assert.Pass();
+        }
+        public void Sign_In()
+        {
             By s = By.XPath("//div/a[@class='login']");
             Move(driver, s);
             By email = By.XPath("//*[@id='email']");
@@ -33,10 +38,7 @@ namespace Test
 
             By sub = By.XPath("//*[@id='email']//following::input[@id='passwd']//following::button[@id='SubmitLogin']");
             Move(driver, sub);
-
-            Assert.Pass();
         }
-
         [Test,Category("Invalid Email")]
         public void Test2()
         {
@@ -195,16 +197,200 @@ namespace Test
             Assert.AreEqual(x, equal);
         }
 
-        //[Test, Category("Buy Product")]
-        //public void Test5()
-        //{
-        //    Test1();
+        [Test, Category("Buy Product")]
+        public void Test5()
+        {
+            By t1 = By.XPath("//div[@id='block_top_menu']/ul/li[1]");
+            Mouse_Hover(driver, driver.FindElement(t1));
+            By t2 = By.XPath("//div[@id='block_top_menu']/ul/li[1]//child::li[1]//child::li[1]/a");
+            Mouse_Hover(driver, driver.FindElement(t2));
+            Move(driver, t2);
+            By image = By.XPath("//*[@class='product-image-container']");
+            Mouse_Hover(driver, driver.FindElement(image));
+            Thread.Sleep(100);
+            By more = By.XPath("//div[@class='right-block']//child::a[2]");
+            Cursor_Move(driver, driver.FindElement(more));
+            Mouse_Action(driver, driver.FindElement(more));
+            Thread.Sleep(100);
+            By inc = By.XPath("//*[@id='quantity_wanted_p']//child::a[2]");
+            Move(driver, inc);
+            By size_c = By.XPath("//*[@id='attributes']//child::*[@id='uniform-group_1']");
+            Move(driver, size_c);
+            Thread.Sleep(1000);
+            string o = "//*[@id='attributes']//child::*[@id='uniform-group_1']//child::*[@id='group_1']/option[@value='";
+            By size_option = By.XPath("//*[@id='attributes']//child::*[@id='uniform-group_1']//child::*[@id='group_1']/option");
 
-        //    Thread.Sleep(1000000);
+            IReadOnlyCollection<IWebElement> list = driver.FindElements(size_option);
+            Console.WriteLine(list.Count);
+            string t, v;
+            foreach (IWebElement element in list)
+            {
+                t = element.Text;
+                v = element.GetAttribute("value");
+                if ("L" == t)
+                {
+                    element.Click();
+                    break;
+                }
+                Console.WriteLine(o + v.ToString() + "']");
+            }
+            Thread.Sleep(100);
+            scroll();
+            By or = By.XPath("//*[@id='color_to_pick_list']/li[2]/a");
+            Move(driver, or);
+            Thread.Sleep(100);
+            scroll();
+            By sub = By.XPath("//*[@id='add_to_cart']//child::button");
+            Move(driver, sub);
+            Thread.Sleep(100);
+            By check_out_btn1 = By.XPath("//*[@class='button-container']//child::a");
+            Move(driver, check_out_btn1);
+            Thread.Sleep(100);
+            scroll();
+            By check_out_btn2 = By.XPath("//*[@class='cart_navigation clearfix']/a");
+            Move(driver, check_out_btn2);
+            Thread.Sleep(100);
+            // Sign_In();
+            By email = By.XPath("//*[@id='email']");
+            //Console.WriteLine(Email);
+            //Console.WriteLine(this.Email);
+            string Email = "Abo@hopefull.com";
+            string Password = "56@oi!AbghuIO";
+            Move(driver, email,Email);
 
-        //    // }
+            By p = By.XPath("//*[@id='email']//following::input[@id='passwd']");
+            Move(driver, p,Password);
 
-            [TearDown]
+            By sub_Login = By.XPath("//*[@id='email']//following::input[@id='passwd']//following::button[@id='SubmitLogin']");
+            Move(driver, sub_Login);
+            Thread.Sleep(100);
+            By check_out_btn3 = By.XPath("//*[@class='cart_navigation clearfix']//child::button");
+            Move(driver, check_out_btn3);
+            Thread.Sleep(100);
+            scroll();
+            scroll();
+            // By check_box = By.XPath("//*[@id='uniform-cgv']//child::input[@id='cgv']");
+            By check_box = By.Id("cgv");
+            Mouse_Hover(driver, driver.FindElement(check_box));
+            Mouse_Action(driver, driver.FindElement(check_box));
+            //f.Form_Fill(driver, check_box, b);
+            Thread.Sleep(100);
+            //*[@class='cart_navigation clearfix']//child::button
+            Move(driver, check_out_btn3);
+            Thread.Sleep(100);
+            scroll();
+            By pay_bank_wire = By.XPath("//*[@id='HOOK_PAYMENT']//child::p/a");
+            Move(driver, pay_bank_wire);
+
+            scroll();
+            Thread.Sleep(100);
+            Move(driver, check_out_btn3);
+            scroll();
+            scroll();
+            Thread.Sleep(5000);
+            Assert.Pass("Order test passed");
+        }
+
+        [Test,Category("Add to wish list")]
+
+        public void Test6()
+        {
+            By t1 = By.XPath("//div[@id='block_top_menu']/ul/li[1]");
+            Mouse_Hover(driver, driver.FindElement(t1));
+            By t2 = By.XPath("//div[@id='block_top_menu']/ul/li[1]//child::li[1]//child::li[1]/a");
+            Mouse_Hover(driver, driver.FindElement(t2));
+            Move(driver, t2);
+            By image = By.XPath("//*[@class='product-image-container']");
+            Mouse_Hover(driver, driver.FindElement(image));
+            Thread.Sleep(100);
+            By wl = By.XPath("//*[@class='functional-buttons clearfix']//child::a");
+            Mouse_Hover(driver, driver.FindElement(wl));
+            Thread.Sleep(10);
+            Move(driver, wl);
+            Thread.Sleep(1000);
+            By e_txt = By.XPath("//*[@class='fancybox-skin']//child::p");
+            string error_txt = driver.FindElement(e_txt).Text;
+            Console.WriteLine(error_txt);
+
+            if (error_txt == "You must be logged in to manage your wishlist.")
+            {
+                Console.WriteLine("Test case passed");
+            }
+            else
+            {
+                Console.WriteLine("Failed");//*[@class='fancybox-skin']//child::p
+            }
+            Assert.AreEqual("You must be logged in to manage your wishlist.", error_txt,"Test case 6 passed");
+        }
+
+        [Test,Category("Shopping Cart Summary Page")]
+
+        public void Test7()
+        {
+            By t1 = By.XPath("//div[@id='block_top_menu']/ul/li[1]");
+            Mouse_Hover(driver, driver.FindElement(t1));
+            By t2 = By.XPath("//div[@id='block_top_menu']/ul/li[1]//child::li[1]//child::li[1]/a");
+            Mouse_Hover(driver, driver.FindElement(t2));
+            Move(driver, t2);
+            By image = By.XPath("//*[@class='product-image-container']");
+            Mouse_Hover(driver, driver.FindElement(image));
+            Thread.Sleep(100);
+            By more = By.XPath("//div[@class='right-block']//child::a[2]");
+            Cursor_Move(driver, driver.FindElement(more));
+            Mouse_Action(driver, driver.FindElement(more));
+            Thread.Sleep(100);
+            scroll();
+            By min_item = By.XPath("//*[@id='quantity_wanted_p']//child::input");
+            string min_num = driver.FindElement(min_item).GetAttribute("value");
+            if (min_num == "1")
+                Console.WriteLine("Test case inner passed");
+            else
+                Console.WriteLine("Test case inner not passed");
+            Assert.AreEqual("1", min_num, "Inner case passed");
+
+            By size_c = By.XPath("//*[@id='attributes']//child::*[@id='uniform-group_1']");
+            Move(driver, size_c);
+            Thread.Sleep(1000);
+            string o = "//*[@id='attributes']//child::*[@id='uniform-group_1']//child::*[@id='group_1']/option[@value='";
+            By size_option = By.XPath("//*[@id='attributes']//child::*[@id='uniform-group_1']//child::*[@id='group_1']/option");
+
+            IReadOnlyCollection<IWebElement> list = driver.FindElements(size_option);
+            Console.WriteLine(list.Count);
+            string t, v;
+            foreach (IWebElement element in list)
+            {
+                t = element.Text;
+                v = element.GetAttribute("value");
+                if ("M" == t)
+                {
+                    element.Click();
+                    break;
+                }
+                Console.WriteLine(o + v.ToString() + "']");
+            }
+            Thread.Sleep(100);
+            scroll();
+            By or = By.XPath("//*[@id='color_to_pick_list']/li[2]/a");
+            Move(driver, or);
+            By sub = By.XPath("//*[@id='add_to_cart']//child::button");
+            Move(driver, sub);
+            Thread.Sleep(100);
+            By check_out_btn1 = By.XPath("//*[@class='button-container']//child::a");
+            Move(driver, check_out_btn1);
+            Thread.Sleep(100);
+            string price1 = driver.FindElement(By.XPath("//*[@id='cart_summary']//child::td[6]/span")).Text;
+            Console.WriteLine(price1);
+            By inc = By.XPath("//*[@class='cart_quantity_button clearfix']/a[2]");
+            Move(driver, inc);
+            Thread.Sleep(3000);
+            scroll();
+            scroll();
+            string tp = driver.FindElement(By.XPath("//*[@id='total_price_container']/span")).Text;
+           
+            Assert.AreEqual("$35.02", tp,"Test case total price passed");
+
+        }
+        [TearDown]
         public void EndTest()
         {
             close_quit();
